@@ -1,0 +1,60 @@
+## Based on https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
+ 
+# User-specific files
+*.suo
+*.user
+*.local.json
+ 
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+ 
+# Visual Studio cache/options directory
+.vs/
+
+# Visual Studio code cache/options directory
+.vscode/
+ 
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+ 
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+ 
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+**/Properties/launchSettings.json
+ 
+# ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+ 
+# DotCover is a Code Coverage Tool
+*.dotCover
+ 
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/[Pp]ackages/*
+# except build/, which is used as an MSBuild target.
+!**/[Pp]ackages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/[Pp]ackages/repositories.config
+# NuGet v3's project.json files produces more ignorable files
+*.nuget.props
+*.nuget.targets
+
+*idea/
