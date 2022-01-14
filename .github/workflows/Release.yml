@@ -20,7 +20,7 @@ jobs:
       run: dotnet test
         
     - name: Build with dotnet
-      run: dotnet pack --configuration Release -o out /p:Version=1.2.0.${{ env.GITHUB_RUN_NUMBER }}
+      run: dotnet pack --configuration Release -o out /p:Version=1.2.0.${{github.run_number}}
       
     - name: Push nuget package
       run: dotnet nuget push ./out/*.nupkg -k ${{ secrets.Nuget_Key }} -s https://api.nuget.org/v3/index.json
