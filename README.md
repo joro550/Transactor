@@ -1,5 +1,5 @@
 # Transactor
-
+ 
 When performing complex operations on a distributed system we usually want a way to perform the operation and rollback when things don't go the way we expect them to go.
 
 This library help with that process, let's say we want to 
