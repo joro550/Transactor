@@ -16,7 +16,7 @@ internal class Orchestrator<T> : IOrchestrator<T> where T : IExecutionContext, n
         var context = new T();
         ExecutionResult<T>? result = null;
         
-        var myExecutionContext = new MyExecutionContext<T>(context);
+        var myExecutionContext = new ExecutionVisitor<T>(context);
         for (var stepsCompleted = 0; stepsCompleted < _steps.Count; stepsCompleted++)
         {
             try

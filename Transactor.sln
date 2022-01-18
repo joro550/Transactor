@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactor", "Transactor\Tr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactor.Tests", "Transactor.Tests\Transactor.Tests.csproj", "{9185CE19-2285-4639-AC67-C09BCBC27570}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactor.Tests.Polly", "Transactor.Tests.Polly\Transactor.Tests.Polly.csproj", "{BB90E17E-AD54-4611-8092-FF5B7898480F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{9185CE19-2285-4639-AC67-C09BCBC27570}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9185CE19-2285-4639-AC67-C09BCBC27570}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9185CE19-2285-4639-AC67-C09BCBC27570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB90E17E-AD54-4611-8092-FF5B7898480F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB90E17E-AD54-4611-8092-FF5B7898480F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB90E17E-AD54-4611-8092-FF5B7898480F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB90E17E-AD54-4611-8092-FF5B7898480F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
