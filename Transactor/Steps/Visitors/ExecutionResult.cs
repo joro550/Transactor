@@ -13,7 +13,7 @@ public class ExecutionResult<T> where T: IExecutionContext, new()
         Context = context;
     }
 
-    internal static ExecutionResult<TResult> Thing<TResult>(TResult item) where TResult : IExecutionContext, new() =>
+    internal static ExecutionResult<TResult> Successful<TResult>(TResult item) where TResult : IExecutionContext, new() =>
         new(true, item);
     
     internal static ExecutionResult<TResult> Fail<TResult>(TResult item) where TResult : IExecutionContext, new() =>

@@ -1,22 +1,25 @@
-﻿using Transactor.Execution;
-using Transactor.Steps;
+﻿using Transactor.Steps;
+using Transactor.Execution;
 using Transactor.Steps.Visitors;
 
 namespace Transactor;
 
 internal class Orchestrator<T> : IOrchestrator<T> where T : IExecutionContext, new ()
 {
+    private readonly T _state;
     private readonly List<Step<T>> _steps;
 
-    public Orchestrator(List<Step<T>> steps) 
-        => _steps = steps;
+    public Orchestrator(List<Step<T>> steps, T initialState)
+    {
+        _steps = steps;
+        _state = initialState;
+    }
 
     public ExecutionResult<T> Execute()
     {
-        var context = new T();
         ExecutionResult<T>? result = null;
         
-        var myExecutionContext = new ExecutionVisitor<T>(context);
+        var myExecutionContext = new ExecutionVisitor<T>(_state);
         for (var stepsCompleted = 0; stepsCompleted < _steps.Count; stepsCompleted++)
         {
             try
@@ -25,13 +28,13 @@ internal class Orchestrator<T> : IOrchestrator<T> where T : IExecutionContext, n
             }
             catch (Exception)
             {
-                Rollback(stepsCompleted, context);
-                result = ExecutionResult<T>.Fail(context);
+                Rollback(stepsCompleted, _state);
+                result = ExecutionResult<T>.Fail(_state);
                 break;
             }
         }
 
-        return result ?? ExecutionResult<T>.Thing(context);
+        return result ?? ExecutionResult<T>.Successful(_state);
     }
 
     private void Rollback(int stepsCompleted, T state)

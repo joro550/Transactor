@@ -6,17 +6,20 @@ namespace Transactor;
 
 internal class AsyncOrchestrator<T> : IAsyncOrchestrator<T> where T : IExecutionContext, new ()
 {
+    private readonly T _state;
     private readonly List<AsyncStep<T>> _steps;
 
-    public AsyncOrchestrator(List<AsyncStep<T>> steps) 
-        => _steps = steps;
+    public AsyncOrchestrator(List<AsyncStep<T>> steps, T initialState)
+    {
+        _steps = steps;
+        _state = initialState;
+    }
 
     public async Task<ExecutionResult<T>> ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        var context = new T();
         ExecutionResult<T>? result = null;
         
-        var myExecutionContext = new ExecutionVisitor<T>(context);
+        var myExecutionContext = new ExecutionVisitor<T>(_state);
         for (var stepsCompleted = 0; stepsCompleted < _steps.Count; stepsCompleted++)
         {
             try
@@ -25,13 +28,13 @@ internal class AsyncOrchestrator<T> : IAsyncOrchestrator<T> where T : IExecution
             }
             catch (Exception)
             {
-                await Rollback(stepsCompleted, context, cancellationToken);
-                result = ExecutionResult<T>.Fail(context);
+                await Rollback(stepsCompleted, _state, cancellationToken);
+                result = ExecutionResult<T>.Fail(_state);
                 break;
             }
         }
 
-        return result ?? ExecutionResult<T>.Thing(context);
+        return result ?? ExecutionResult<T>.Successful(_state);
     }
 
     private async Task Rollback(int stepsCompleted, T state, CancellationToken cancellationToken = default)
