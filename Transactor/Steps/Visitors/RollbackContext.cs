@@ -8,13 +8,10 @@ internal class RollbackContext<T> : IVisitor<T> where T : IExecutionContext, new
 
     public RollbackContext(T state) 
         => _state = state;
-    
-    public Task Visit(Step<T> step, CancellationToken cancellationToken = default)
-    {
-        step.RollBack(_state);
-        return Task.CompletedTask;
-    }
+
+    public void Visit(Step<T> step)
+        => step.GetPolicy().Execute(() => step.RollBack(_state));
 
     public async Task Visit(AsyncStep<T> step, CancellationToken cancellationToken = default) 
-        => await step.RollBack(cancellationToken);
+        => await step.RollBackAsync(_state, cancellationToken);
 }

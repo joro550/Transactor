@@ -15,13 +15,13 @@ public class DefaultStepPolicy : IStepPolicy
 
 public interface IAsyncStepPolicy
 {
-    Task Execute(Func<CancellationToken, Task> action, CancellationToken token);
+    Task ExecuteAsync(Func<CancellationToken, Task> action, CancellationToken token);
 }
 
 public class DefaultAsyncStepPolicy : IAsyncStepPolicy
 {
     public static IAsyncStepPolicy Instance = new DefaultAsyncStepPolicy();
 
-    public async Task Execute(Func<CancellationToken, Task> action, CancellationToken token)
+    public async Task ExecuteAsync(Func<CancellationToken, Task> action, CancellationToken token)
         => await action(token);
 }

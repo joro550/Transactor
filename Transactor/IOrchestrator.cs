@@ -5,5 +5,5 @@ namespace Transactor;
 
 public interface IOrchestrator<T> where T : IExecutionContext, new ()
 {
-    Task<ExecutionResult<T>> ExecuteAsync(CancellationToken cancellationToken = default);
+    ExecutionResult<T> Execute();
 }

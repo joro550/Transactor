@@ -1,5 +1,4 @@
 using Xunit;
-using System.Threading.Tasks;
 using Transactor.Tests.Steps;
 using Transactor.Tests.Results;
 
@@ -8,18 +7,18 @@ namespace Transactor.Tests;
 public class UnitTest1
 {
     [Fact]
-    public async Task Test1()
+    public void Test1()
     {
         var workflow = new WorkflowBuilder<MyContext>()
             .AddStep(new IdIncrementStep())
             .Build();
 
-        var result = await workflow.ExecuteAsync();
+        var result = workflow.Execute();
         Assert.Equal(1, result.Context.Id);
     }
     
     [Fact]
-    public async Task Test2()
+    public void Test2()
     {
         var baseStep = new IdIncrementStep();
         
@@ -28,24 +27,24 @@ public class UnitTest1
             .AddStep(baseStep)
             .Build();
 
-        var result = await workflow.ExecuteAsync();
+        var result = workflow.Execute();
         Assert.Equal(2, result.Context.Id);
     }
     
     [Fact]
-    public async Task Test3()
+    public void Test3()
     {
         var workflow = new WorkflowBuilder<MyContext>()
             .AddStep(new IdIncrementStep())
             .AddStep(new ThrowExceptionStep())
             .Build();
 
-        var result = await workflow.ExecuteAsync();
+        var result = workflow.Execute();
         Assert.Equal(0, result.Context.Id);
     }
     
     [Fact]
-    public async Task Test4()
+    public void Test4()
     {
         var workflow = new WorkflowBuilder<MyContext>()
             .AddStep(new IdIncrementStep())
@@ -53,12 +52,12 @@ public class UnitTest1
             .AddStep(new IdIncrementStep())
             .Build();
 
-        var result = await workflow.ExecuteAsync();
+        var result = workflow.Execute();
         Assert.Equal(0, result.Context.Id);
     }
     
     [Fact]
-    public async Task Test5()
+    public void Test5()
     {
         var workflow = new WorkflowBuilder<MyContext>()
             .AddStep(new IdIncrementStep())
@@ -66,7 +65,7 @@ public class UnitTest1
             .AddStep(new ThrowExceptionStep())
             .Build();
 
-        var result = await workflow.ExecuteAsync();
+        var result = workflow.Execute();
         Assert.Equal(0, result.Context.Id);
     }
 }

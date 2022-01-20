@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Threading.Tasks;
 using Transactor.Policies;
 using Transactor.Steps;
 using Transactor.Tests.Polly.Results;
@@ -13,4 +15,21 @@ public class IdIncrementStep : Step<MyContext>
 
     public override void RollBack(MyContext executionContext)
         => executionContext.Id--;
+}
+
+public class IdIncrementAsyncStep : AsyncStep<MyContext>
+{
+    public IdIncrementAsyncStep(IAsyncStepPolicy policy) : base(policy) { }
+    
+    public override Task ExecuteAsync(MyContext executionContext, CancellationToken token)
+    {
+        executionContext.Id++;
+        return Task.CompletedTask;
+    } 
+
+    public override Task RollBackAsync(MyContext executionContext, CancellationToken token)
+    {
+        executionContext.Id--;
+        return Task.CompletedTask;
+    }
 }

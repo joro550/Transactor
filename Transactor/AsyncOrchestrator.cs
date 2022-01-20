@@ -4,14 +4,14 @@ using Transactor.Steps.Visitors;
 
 namespace Transactor;
 
-internal class Orchestrator<T> : IOrchestrator<T> where T : IExecutionContext, new ()
+internal class AsyncOrchestrator<T> : IAsyncOrchestrator<T> where T : IExecutionContext, new ()
 {
-    private readonly List<Step<T>> _steps;
+    private readonly List<AsyncStep<T>> _steps;
 
-    public Orchestrator(List<Step<T>> steps) 
+    public AsyncOrchestrator(List<AsyncStep<T>> steps) 
         => _steps = steps;
 
-    public ExecutionResult<T> Execute()
+    public async Task<ExecutionResult<T>> ExecuteAsync(CancellationToken cancellationToken = default)
     {
         var context = new T();
         ExecutionResult<T>? result = null;
@@ -21,11 +21,11 @@ internal class Orchestrator<T> : IOrchestrator<T> where T : IExecutionContext, n
         {
             try
             {
-                _steps[stepsCompleted].Accept(myExecutionContext);
+                await _steps[stepsCompleted].Accept(myExecutionContext, cancellationToken);
             }
             catch (Exception)
             {
-                Rollback(stepsCompleted, context);
+                await Rollback(stepsCompleted, context, cancellationToken);
                 result = ExecutionResult<T>.Fail(context);
                 break;
             }
@@ -34,13 +34,13 @@ internal class Orchestrator<T> : IOrchestrator<T> where T : IExecutionContext, n
         return result ?? ExecutionResult<T>.Thing(context);
     }
 
-    private void Rollback(int stepsCompleted, T state)
+    private async Task Rollback(int stepsCompleted, T state, CancellationToken cancellationToken = default)
     {
         var rollbackContext = new RollbackContext<T>(state);
         for (var i = 0; i <= stepsCompleted; i++)
             try
             {
-                _steps[i].Accept(rollbackContext);
+                await _steps[i].Accept(rollbackContext, cancellationToken);
             }
             catch (Exception)
             {
